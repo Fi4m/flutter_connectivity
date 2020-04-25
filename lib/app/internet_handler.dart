@@ -31,7 +31,6 @@ mixin InternetHandler on State<App> {
   _onConnectivityChangedListner(ConnectivityResult result) async {
     if (result == ConnectivityResult.none) {
       isConnectedToInternet.add(false);
-      _dataListener?.cancel();
     } else {
       final isConnected = await _dataConnectionChecker.hasConnection;
       isConnectedToInternet.add(isConnected);
@@ -44,9 +43,7 @@ mixin InternetHandler on State<App> {
 
   _onStatusChangeListener(DataConnectionStatus status) {
     isConnectedToInternet.add(status == DataConnectionStatus.connected);
-    if (status == DataConnectionStatus.connected) {
-      _dataListener?.cancel();
-    } else {
+    if (status == DataConnectionStatus.disconnected) {
       Future.delayed(Duration(seconds: 20), () => _dataConnectionChecker.hasConnection);
     }
   }
