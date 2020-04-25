@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_connectivity/app/first_screen.dart';
 import 'package:flutter_connectivity/app/internet_handler.dart';
-import 'package:flutter_connectivity/app/no_internet_screen.dart';
-import 'package:flutter_connectivity/app/second_screen.dart';
-import 'package:flutter_connectivity/app/third_screen.dart';
+import 'package:flutter_connectivity/app/screens/first_screen.dart';
+import 'package:flutter_connectivity/app/screens/no_internet_screen.dart';
+import 'package:flutter_connectivity/app/screens/second_screen.dart';
+import 'package:flutter_connectivity/app/screens/third_screen.dart';
 
 class App extends StatefulWidget {
   // This widget is the root of your application.
@@ -19,17 +19,20 @@ class _AppState extends State<App> with InternetHandler {
   void initState() {
     super.initState();
 
-    isConnectedToInternet.stream.listen((isConnectedToInternet) {
-      if (isConnectedToInternet) {
-        Navigator.popUntil(buildContext, (Route<dynamic> route) {
-          return route.settings.name != "/noInternet";
-        });
-      } else {
-        Navigator.pushNamedAndRemoveUntil(buildContext, "/noInternet", (Route<dynamic> route) {
-          return route.settings.name != "/noInternet";
-        });
-      }
-    });
+    isConnectedToInternet.stream.listen(_handleInternetConnection);
+  }
+
+  void _handleInternetConnection(isConnectedToInternet) {
+    if (isConnectedToInternet) {
+      Navigator.popUntil(buildContext, (Route<dynamic> route) {
+        return route.settings.name != "/noInternet";
+      });
+    } else {
+      Navigator.pushNamedAndRemoveUntil(buildContext, "/noInternet",
+          (Route<dynamic> route) {
+        return route.settings.name != "/noInternet";
+      });
+    }
   }
 
   @override
@@ -39,19 +42,17 @@ class _AppState extends State<App> with InternetHandler {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+      home: Builder(builder: (context) {
+        this.buildContext = context;
+        return FirstScreen();
+      }),
       routes: _routes,
     );
   }
 
   Map<String, WidgetBuilder> get _routes => {
-    "/": (context) => _saveContext(context, FirstScreen()),
-    "/second": (context) => _saveContext(context, SecondScreen()),
-    "/third": (context) => _saveContext(context, ThirdScreen()),
-    "/noInternet": (context) => NoInternetScreen()
-  };
-
-  Widget _saveContext(BuildContext context, Widget widget) {
-    buildContext = context;
-    return widget;
-  }
+        "/second": (context) => SecondScreen(),
+        "/third": (context) => ThirdScreen(),
+        "/noInternet": (context) => NoInternetScreen()
+      };
 }

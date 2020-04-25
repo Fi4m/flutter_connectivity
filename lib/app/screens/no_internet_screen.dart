@@ -1,4 +1,4 @@
-import 'package:connectivity/connectivity.dart';
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/material.dart';
 
 class NoInternetScreen extends StatelessWidget {
@@ -13,7 +13,7 @@ class NoInternetScreen extends StatelessWidget {
           children: <Widget>[
             Text("No internet connection", style: TextStyle(fontSize: 17)),
             FlatButton(
-              onPressed: () => Connectivity().checkConnectivity(),
+              onPressed: () => DataConnectionChecker().hasConnection,
               child: Text("Retry", style: TextStyle(color: Colors.blue)),
             )
           ],

@@ -1,13 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_connectivity/app/internet_handler.dart';
-import 'package:flutter_connectivity/app/no_internet_state.dart';
 
-class FirstScreen extends StatefulWidget {
-  @override
-  _FirstScreenState createState() => _FirstScreenState();
-}
-
-class _FirstScreenState extends State<FirstScreen> {
+class FirstScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +12,9 @@ class _FirstScreenState extends State<FirstScreen> {
         child: Center(
           child: FlatButton(
             onPressed: () => Navigator.pushNamed(context, "/second"),
-            child: Text("Second Screen"),
+            child: Text("Second Screen >"),
+            textColor: Colors.white,
+            color: Colors.blue,
           ),
         ),
       ),

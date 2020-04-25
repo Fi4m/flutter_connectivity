@@ -46,6 +46,8 @@ mixin InternetHandler on State<App> {
     isConnectedToInternet.add(status == DataConnectionStatus.connected);
     if (status == DataConnectionStatus.connected) {
       _dataListener?.cancel();
+    } else {
+      Future.delayed(Duration(seconds: 20), () => _dataConnectionChecker.hasConnection);
     }
   }
 }
